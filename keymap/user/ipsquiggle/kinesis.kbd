@@ -1,0 +1,234 @@
+#| --------------------------------------------------------------------------
+
+                     KMonad: Kinesis template
+
+  This file contains the `defsrc' configuration for a standard Kinesis
+  keyboard.
+
+  Copy out the `defsrc' layer to start your own keyboard configuration. Copy
+  out the `deflayer' template to easily start a new layer with matching
+  `transparent' buttons. 
+
+(defcfg
+  ;; ** For Linux **
+  ;; input  (device-file "/dev/input/by-id/usb-HOLTEK_USB-HID_Keyboard-event-kbd") ;; Change this line for your device
+  ;; input  (device-file "/dev/input/by-id/usb-Matias_Ergo_Pro_Keyboard-event-kbd")
+  ;; output (uinput-sink "KMonad output")
+
+  ;; ** For Windows **
+  input  (low-level-hook)
+  output (send-event-sink)
+
+  ;; ** For MacOS **
+  ;; input  (iokit-name "my-keyboard-product-string")
+  ;; output (kext)
+
+  fallthrough true
+)
+
+;; LAYER TEMPLATE
+
+(deflayer name
+  _    _    _    _    _    _    _    _    _         _    _    _    _    _    _    _    
+
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    _    _    _    _         _    _    _    _    _    _   
+       _    _    _    _                   _    _    _    _
+
+                      _    _         _    _   
+                 _    _    _         _    _    _   
+                           _         _   
+)
+
+  -------------------------------------------------------------------------- |#
+
+(defcfg
+  ;; ** For Linux **
+  ;; input  (device-file "/dev/input/by-id/usb-HOLTEK_USB-HID_Keyboard-event-kbd") ;; Change this line for your device
+  ;; input  (device-file "/dev/input/by-id/usb-Matias_Ergo_Pro_Keyboard-event-kbd")
+  ;; output (uinput-sink "KMonad output")
+
+  ;; ** For Windows **
+  input  (low-level-hook)
+  output (send-event-sink)
+
+  ;; ** For MacOS **
+  ;; input  (iokit-name "my-keyboard-product-string")
+  ;; output (kext)
+
+  fallthrough true
+)
+
+;; !!!! IMPORTANT NOTE !!!! 
+;; I have swapped space and backspace on my keyboard, so this is different than the template.
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8        f9   f10  f11  f12  ssrq slck pause
+
+  =    1    2    3    4    5         6    7    8    9    0    -
+  tab  q    w    e    r    t         y    u    i    o    p    \
+  caps a    s    d    f    g         h    j    k    l    ;    '
+  lsft z    x    c    v    b         n    m    ,    .    /    rsft
+       grv  \    left rght                up   down [    ]
+
+                      lctl lalt      rmet rctl
+                 spc  del  home      pgup ret  bspc
+                           end       pgdn
+)
+
+(defalias
+  nux  (tap-hold 200 (layer-switch default) (layer-toggle numbers)) ;; Bind num to a button that switches to a layer
+  qnx  (layer-toggle quicknav) ;; Bind num to a button that switches to a layer
+)
+
+(deflayer standard
+  esc  f1   f2   f3   f4   f5   f6   f7   f8        f9   f10  f11  f12  ssrq slck pause
+
+  =    1    2    3    4    5         6    7    8    9    0    -
+  tab  q    w    e    r    t         y    u    i    o    p    \
+  caps a    s    d    f    g         h    j    k    l    ;    '
+  lsft z    x    c    v    b         n    m    ,    .    /    rsft
+       grv  \    left rght                up   down [    ]
+
+                      lctl lalt      rmet rctl
+                 spc  del  @qnx      @qnx ret  bspc
+                           @nux      @nux
+)
+
+(defalias
+  num  (tap-hold 200 (layer-switch standard) (layer-toggle numbers)) ;; Bind num to a button that switches to a layer
+  qnv  (layer-toggle quicknav) ;; Bind num to a button that switches to a layer
+  dna (tap-hold-next-release 200 del @qnv)
+  rnm (tap-hold-next-release 200 ret (layer-toggle numbers))
+)
+
+;; (defalias
+;; ;; EASY PINKY SHIFT KEYS
+;; ;;  zsh  z ;; z as shift key
+;; ;;  ssh  / ;; / as shift key
+;;   zsh  (tap-next z lsft) ;; z as shift key
+;;   ssh  (tap-next / lsft) ;; / as shift key
+;; 
+;; ;; HOME ROW MODIFIERS
+;;   m-a (tap-next a lsft) ;; (tap-next tap combo) immediately types bx if x while key is down, otherwise types a on keyup
+;;                         ;; also emits xb if Px Pa Rx Ra -- this seems like very bad behaviour for a modifier..
+;;   m-s (tap-hold 200 a lsft) ;; (tap-hold delay tap hold) types a if released <200ms, otherwise b. queues events to ensure ordering
+;;   m-d (tap-hold-next 200 a lsft) ;; (tap-hold-next delay tap hold-or-combo) types a if released <200ms, b if >200ms OR bx if x while pressed
+;;   m-f (tap-next-release a lsft) ;; (tap-next-release tap combo) like tap-next, but only does bx if x is both pressed and released inside the hold
+;;                                 ;; seems like better modifier behavior...
+;;   m-j (tap-hold-next-release 200 a lsft) ;; (tap-hold-next-release delay tap hold-or-combo)
+;;                                          ;; has t-n-r's same requirement of requiring Px Rx to be inside the hold, but ALSO modifies if the timeout expires
+;;   m-k (tap-hold 2000 a lsft)
+;;   m-l (tap-hold-next 2000 a lsft)
+;;   m-; (tap-hold-next-release 2000 a lsft)
+;; )
+
+(defalias
+;; EASY PINKY SHIFT KEYS
+;;  zsh  z ;; z as shift key
+;;  ssh  / ;; / as shift key
+  zsh  (tap-next-release z lsft) ;; z as shift key
+  ssh  (tap-next-release / lsft) ;; / as shift key
+
+;; HOME ROW MODIFIERS
+  m-a (tap-hold-next-release 250 a lsft)
+  m-s (tap-hold-next-release 400 s lmet)
+  m-d (tap-hold-next-release 200 d lalt)
+  m-f (tap-hold-next-release 200 f lctl)
+  m-j (tap-hold-next-release 200 j rctl)
+  m-k (tap-hold-next-release 200 k ralt)
+  m-l (tap-hold-next-release 400 l rmet)
+  m-; (tap-hold-next-release 250 ; rsft)
+)
+
+(deflayer default
+  esc  f1   f2   f3   f4   f5   f6   f7   f8        f9   f10  f11  f12  ssrq slck pause
+
+  =    1    2    3    4    5         6    7    8    9    0    -
+  tab  q    w    e    r    t         y    u    i    o    p    \
+  caps @m-a @m-s @m-d @m-f g         h    @m-j @m-k @m-l @m-; '
+  lsft @zsh x    c    v    b         n    m    ,    .    @ssh rsft
+       grv  \    left rght                up   down [    ]
+
+                      lctl lalt      rmet rctl
+                 spc  @dna @qnv      @qnv @rnm bspc
+                           @num      @num
+)
+
+(deflayer numbers
+  _    _    _    _    _    _    _    _    _         _    _    _    _    _    _    _    
+
+  f1   f2   f3   f4   f5   f6        f7   f8   f9   f10  f11  f12
+  _    _    _    {    }    _         /    7    8    9    +    _
+  _    _    _    [    ]    _         *    4    5    6    -    _
+  _    _    ,    \(   \)   .         0    1    2    3    .    _   
+       _    _    _    _                   _    _    _    _
+
+                      _    _         _    _   
+                 _    _    _         _    _    _   
+                           _         _   
+)
+
+(deflayer quicknav
+  _    _    _    _    _    _    _    _    _         _    _    _    _    _    _    _    
+
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    home pgdn pgup end       home pgdn pgup end  _    _
+  _    _    left up   down rght      left down up   rght _    _
+  _    _    _    _    _    _         _    _    _    _    _    _
+       _    _    _    _                   _    _    _    _
+
+                      _    _         _    _   
+                 _    _    _         _    _    _   
+                           _         _   
+)
+
+#| ------------------------------
+;; SILLY VIM EMULATION STUFF LOL BAD IDEA I THINK
+
+(defalias
+  mj  (multi-tap 300 j 300 (layer-add nav) j) ;; enter normal mode with jj
+
+  nsh  (layer-toggle navshift) ;; Is this really how we simulate shift?
+  w C-right ;; motion only
+  b C-left ;; motion only
+  W C-right ;; motion only -- nothing fancy
+  B C-left ;; motion only -- nothing fancy
+
+  i (layer-rem nav) ;; insert mode
+  a (layer-rem nav) ;; insert mode
+  I (tap-macro home (layer-rem nav)) ;; motion plus insert mode
+  A (tap-macro end (layer-rem nav)) ;; motion plus insert mode
+)
+
+(deflayer nav
+  _    _    _    _    _    _    _    _    _         _    _    _    _    _    _    _    
+
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    @w   _    _    _         _    _    @i   _    _    _
+  _    @a   _    _    _    _         left down up   rght _    _
+  @nsh _    _    _    _    @b        _    _    _    _    _    @nsh
+       _    _    _    _                   _    _    _    _
+
+                      _    _         _    _   
+                 _    _    _         _    _    _   
+                           _         _   
+)
+
+(deflayer navshift
+  _    _    _    _    _    _    _    _    _         _    _    _    _    _    _    _    
+
+  _    _    _    _    _    _         _    _    _    _    _    _
+  _    _    @W   _    _    _         _    _    @I   _    _    _
+  _    @A   _    _    _    _         home pgdn pgup end  _    _
+  _    _    _    _    _    @B        _    _    _    _    _    _   
+       _    _    _    _                   _    _    _    _
+
+                      _    _         _    _   
+                 _    _    _         _    _    _   
+                           _         _   
+)
+
+------------------------------------------------------------------------------ |#
