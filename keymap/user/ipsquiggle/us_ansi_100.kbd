@@ -1,0 +1,123 @@
+#| --------------------------------------------------------------------------
+
+                         KMonad: US ansi 100% template
+
+  This file contains the `defsrc` configuration for a standard US-ansi 100%
+  keyboard. Modelled on a standard DAS-keyboard 100%. Copy out the 'defsrc'
+  layer to start your own keyboard configuration. Copy out the `deflayer`
+  template to easily start a new layer with matching `transparent` buttons.
+
+(deflayer name
+  _    _    _    _    _    _         _    _    _    _    _    _    _            _    _    _
+  _    _    _    _    _    _         _    _    _    _    _    _    _    _       _    _    _       _    _    _    _
+  _     _    _    _    _    _         _    _    _    _    _    _    _    _      _    _    _       _    _    _    _
+  _      _    _    _    _    _         _    _    _    _    _    _       _                         _    _    _
+  _       _    _    _    _    _         _    _    _    _    _           _            _            _    _    _    _
+  _    _    _                   _                        _    _    _    _       _    _    _       _    _   
+)
+
+  -------------------------------------------------------------------------- |#
+
+
+(defcfg
+  ;; ** For Linux **
+  ;; input  (device-file "/dev/input/by-id/usb-HOLTEK_USB-HID_Keyboard-event-kbd") ;; Change this line for your device
+  ;; input  (device-file "/dev/input/by-id/usb-Matias_Ergo_Pro_Keyboard-event-kbd")
+  ;; output (uinput-sink "KMonad output")
+
+  ;; ** For Windows **
+  input  (low-level-hook)
+  output (send-event-sink)
+
+  ;; ** For MacOS **
+  ;; input  (iokit-name "my-keyboard-product-string")
+  ;; output (kext)
+
+  fallthrough true
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5        f6   f7   f8   f9   f10  f11  f12          ssrq slck pause
+  grv  1    2    3    4    5         6    7    8    9    0    -    =    bspc    ins  home pgup    nlck kp/  kp*  kp-
+  tab   q    w    e    r    t         y    u    i    o    p    [    ]    \      del  end  pgdn    kp7  kp8  kp9  kp+
+  caps   a    s    d    f    g         h    j    k    l    ;    '       ret                       kp4  kp5  kp6
+  lsft    z    x    c    v    b         n    m    ,    .    /           rsft         up           kp1  kp2  kp3  kprt
+  lctl lmet lalt                spc                      ralt rmet cmp  rctl    left down rght    kp0  kp.
+)
+
+
+(defalias
+;; EASY PINKY SHIFT KEYS
+;;  zsh  z ;; z as shift key
+;;  ssh  / ;; / as shift key
+;;  zsh  (tap-next-release z lsft) ;; z as shift key
+;;  ssh  (tap-next-release / lsft) ;; / as shift key
+
+;; HOME ROW MODIFIERS
+  m-a (tap-hold-next-release 250 a lsft)
+  m-s (tap-hold-next-release 400 s lmet)
+  m-d (tap-hold-next-release 200 d lalt)
+  m-f (tap-hold-next-release 200 f lctl)
+  m-j (tap-hold-next-release 200 j rctl)
+  m-k (tap-hold-next-release 200 k ralt)
+  m-l (tap-hold-next-release 400 l rmet)
+  m-; (tap-hold-next-release 250 ; rsft)
+)
+
+
+(defalias
+  nux  (tap-hold 200 (layer-switch default) (layer-toggle numbers)) ;; Bind num to a button that switches to a layer
+  qnx  (layer-toggle quicknav) ;; Bind num to a button that switches to a layer
+)
+
+(deflayer standard
+  esc  f1   f2   f3   f4   f5        f6   f7   f8   f9   f10  f11  f12          ssrq slck pause
+  grv  1    2    3    4    5         6    7    8    9    0    -    =    bspc    ins  home pgup    nlck kp/  kp*  kp-
+  tab   q    w    e    r    t         y    u    i    o    p    [    ]    \      del  end  pgdn    kp7  kp8  kp9  kp+
+  caps   a    s    d    f    g         h    j    k    l    ;    '       ret                       kp4  kp5  kp6
+  lsft    z    x    c    v    b         n    m    ,    .    /           rsft         up           kp1  kp2  kp3  kprt
+  lctl lmet lalt                spc                      @nux rmet cmp  rctl    left down rght    kp0  kp.
+)
+
+
+(defalias
+  num  (tap-hold 200 (layer-switch standard) (layer-toggle numbers)) ;; Bind num to a button that switches to a layer
+  qnv  (layer-toggle quicknav) ;; Bind num to a button that switches to a layer
+  zna (tap-hold-next-release 200 z @qnv)
+  xnm (tap-hold-next-release 200 x (layer-toggle numbers))
+)
+
+(deflayer default
+  esc  f1   f2   f3   f4   f5        f6   f7   f8   f9   f10  f11  f12          ssrq slck pause
+  grv  1    2    3    4    5         6    7    8    9    0    -    =    bspc    ins  home pgup    nlck kp/  kp*  kp-
+  tab   q    w    e    r    t         y    u    i    o    p    [    ]    \      del  end  pgdn    kp7  kp8  kp9  kp+
+  caps   @m-a @m-s @m-d @m-f g         h    @m-j @m-k @m-l @m-; '       ret                       kp4  kp5  kp6
+  lsft    @zna @xnm c    v    b         n    m    ,    .    /           rsft         up           kp1  kp2  kp3  kprt
+  lctl lmet lalt                spc                      @num rmet cmp  rctl    left down rght    kp0  kp.
+)
+
+
+(deflayer numbers
+  _    _    _    _    _    _         _    _    _    _    _    _    _            _    _    _
+  f1   f2   f3   f4   f5   f6        f7   f8   f9   f10  f11  f12  _    _       _    _    _       _    _    _    _
+  _     _    _    {    }    _         /    7    8    9    +    _    _    _      _    _    _       _    _    _    _
+  _      _    _    \)   \)   _         *    4    5    6    -    _       _                         _    _    _
+  _       _    _    [    ]    .         0    1    2    3    .           _            _            _    _    _    _
+  _    _    _                   _                        _    _    _    _       _    _    _       _    _   
+)
+
+(defalias
+  clf C-left
+  crt C-rght
+  cup C-up
+  cdn C-down
+)
+
+(deflayer quicknav
+  _    _    _    _    _    _         _    _    _    _    _    _    _            _    _    _
+  _    _    _    _    _    _         _    _    _    _    _    _    _    _       _    _    _       _    _    _    _
+  _     _    home pgdn pgup end       home pgdn pgup end  _    _    _    _      _    _    _       _    _    _    _
+  _      _    left up   down rght      left down up   rght _    _       _                         _    _    _
+  _       _    @clf @cup @cdn @crt      @clf @cdn @cup @crt _           _            _            _    _    _    _
+  _    _    _                   _                        _    _    _    _       _    _    _       _    _   
+)
