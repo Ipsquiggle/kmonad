@@ -90,7 +90,7 @@
   tab  q    w    e    r    t         y    u    i    o    p    \
   caps a    s    d    f    g         h    j    k    l    ;    '
   lsft z    x    c    v    b         n    m    ,    .    /    rsft
-       grv  \    left rght                up   down [    ]
+       grv  \    left rght                down up   [    ]            ;; swapped down and up to use the same fingers as vim
 
                       lctl lalt      rmet rctl
                  spc  del  @qnx      @qnx ret  bspc
