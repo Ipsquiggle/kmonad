@@ -83,8 +83,11 @@
 (defalias
   num  (tap-hold 200 (layer-switch standard) (layer-toggle numbers)) ;; Bind num to a button that switches to a layer
   qnv  (layer-toggle quicknav) ;; Bind num to a button that switches to a layer
+  qnm  (layer-toggle numbers) ;; Bind num to a button that switches to a layer
   zna (tap-hold-next-release 200 z @qnv)
-  xnm (tap-hold-next-release 200 x (layer-toggle numbers))
+  xnm (tap-hold-next-release 200 x @qnm)
+  .nm (tap-hold-next-release 200 . @qnm)
+  /na (tap-hold-next-release 200 / @qnv)
 )
 
 (deflayer default
@@ -92,7 +95,7 @@
   grv  1    2    3    4    5         6    7    8    9    0    -    =    bspc    ins  home pgup    nlck kp/  kp*  kp-
   tab   q    w    e    r    t         y    u    i    o    p    [    ]    \      del  end  pgdn    kp7  kp8  kp9  kp+
   caps   @m-a @m-s @m-d @m-f g         h    @m-j @m-k @m-l @m-; '       ret                       kp4  kp5  kp6
-  lsft    @zna @xnm c    v    b         n    m    ,    .    /           rsft         up           kp1  kp2  kp3  kprt
+  lsft    @zna @xnm c    v    b         n    m    ,    @.nm @/na        rsft         up           kp1  kp2  kp3  kprt
   lctl lmet lalt                spc                      @num rmet cmp  rctl    left down rght    kp0  kp.
 )
 
