@@ -131,25 +131,46 @@
 ;;  ssh  / ;; / as shift key
   zsh  (tap-next-release z lsft) ;; z as shift key
   ssh  (tap-next-release / lsft) ;; / as shift key
+  m-x (tap-hold-next-release 400 x lmet)
+  m-. (tap-hold-next-release 400 . rmet)
 
 ;; HOME ROW MODIFIERS
   m-a (tap-hold-next-release 250 a lsft)
-  m-s (tap-hold-next-release 400 s lmet)
+  ;;m-s (tap-hold-next-release 400 s lmet)
   m-d (tap-hold-next-release 200 d lalt)
   m-f (tap-hold-next-release 200 f lctl)
   m-j (tap-hold-next-release 200 j rctl)
   m-k (tap-hold-next-release 200 k ralt)
-  m-l (tap-hold-next-release 400 l rmet)
+  ;; m-l (tap-hold-next-release 400 l rmet)
   m-; (tap-hold-next-release 250 ; rsft)
+
+;; NUMBER-HOLD F-KEYS
+  ff1 (tap-hold 250 1 f1)
+  ff2 (tap-hold 250 2 f2)
+  ff3 (tap-hold 250 3 f3)
+  ff4 (tap-hold 250 4 f4)
+  ff5 (tap-hold 250 5 f5)
+  ff6 (tap-hold 250 6 f6)
+  ff7 (tap-hold 250 7 f7)
+  ff8 (tap-hold 250 8 f8)
+  ff9 (tap-hold 250 9 f9)
+  ff0 (tap-hold 250 0 f10)
+  ff- (tap-hold 250 - f11)
+  ff\ (tap-hold 250 \ f12)
+  ff' (tap-hold 250 ' prnt)
+
+;; SPACE-CADET SHIFT
+  lsc (tap-hold-next 250 \( lsft)
+  rsc (tap-hold-next 250 \) rsft)
 )
 
 (deflayer default
   esc  f1   f2   f3   f4   f5   f6   f7   f8        f9   f10  f11  f12  prnt slck pause
 
-  =    1    2    3    4    5         6    7    8    9    0    -
-  tab  q    w    e    r    t         y    u    i    o    p    \
-  caps @m-a @m-s @m-d @m-f g         h    @m-j @m-k @m-l @m-; '
-  lsft @zsh x    c    v    b         n    m    ,    .    @ssh rsft
+  =    @ff1 @ff2 @ff3 @ff4 @ff5      @ff6 @ff7 @ff8 @ff9 @ff0 @ff-
+  tab  q    w    e    r    t         y    u    i    o    p    @ff\
+  caps @m-a s    @m-d @m-f g         h    @m-j @m-k l    @m-; @ff'
+  @lsc @zsh @m-x c    v    b         n    m    ,    @m-. @ssh @rsc
        grv  \    left rght                down up   [    ]
 
                       lctl lalt      rmet rctl
