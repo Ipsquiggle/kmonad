@@ -26,4 +26,7 @@ while ($True) {
     $Process = Start-Process ".\kmonad-0.4.1-win.exe" -ArgumentList ".\keymap\user\ipsquiggle\us_ansi_100.kbd" -Verb RunAs -PassThru
     $Process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
     $Process | Wait-Process
+
+    Write-Host "Kmonad paused, press any key to resume..."
+    [void][System.Console]::ReadKey($true)
 }
